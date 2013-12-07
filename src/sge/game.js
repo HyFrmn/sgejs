@@ -2,14 +2,13 @@ define([
     'sge/vendor/underscore',
     'sge/lib/util',
     'sge/lib/class',
-    'sge/vendor/caat',
     'sge/vendor/state-machine',
     'sge/engine',
     'sge/gamestate',
     'sge/input',
     'sge/renderer',
     ],
-function(_, util, Class, CAAT, StateMachine, Engine, GameState, Input, Renderer){
+function(_, util, Class, StateMachine, Engine, GameState, Input, Renderer){
     var LoadState = GameState.extend({
         initState: function(){
             var width = this.game.renderer.width;
