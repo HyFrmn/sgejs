@@ -8,6 +8,7 @@ define(['sge/config',
         'sge/vendor/state-machine',
         'sge/vendor/astar',
         'sge/vendor/when',
+        'sge/vendor/caat',
         'sge/lib/class',
         'sge/lib/random',
         'sge/lib/collision',
@@ -26,6 +27,7 @@ function(
       StateMachine,
       AStar,
       when,
+      CAAT,
       Class,
       random,
       collision,
@@ -44,7 +46,8 @@ function(
         vendor : {
           StateMachine : StateMachine,
           AStar : AStar,
-          when : when
+          when : when,
+          CAAT: CAAT
         },
         Class : Class,
         random : random,
