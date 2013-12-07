@@ -42,9 +42,6 @@ function(
         Game : Game,
         GameState : GameState,
         vendor : {
-          PxLoader : PxLoader,
-          VirtualJoystick : VirtualJoystick,
-          Hammer : Hammer,
           StateMachine : StateMachine,
           AStar : AStar,
           when : when

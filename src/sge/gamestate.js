@@ -1,5 +1,5 @@
 define(['sge/lib/class', 'sge/vendor/underscore'],
-	function(Class, _, PxLoader){
+	function(Class, _){
 
 	var Timeout = Class.extend({
 		init: function(length, callback){

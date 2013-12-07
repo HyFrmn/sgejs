@@ -11,7 +11,7 @@ module.exports = function(grunt) {
         clean: [".tmp/"],
 
         concat: {
-            "sge.js" : ["vendor/require.js",".tmp/sge.js"],
+            "sge.js" : ["node_modules/requirejs/require.js",".tmp/sge.js"],
             "options" : {
                 process : function(content, srcpath){
                     content = content.replace(/\$\$BUILD_DATE/, grunt.template.today('yyyy-mm-dd'))
