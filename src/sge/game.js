@@ -190,7 +190,6 @@ function(_, util, Class, CAAT, StateMachine, Engine, GameState, Input, Renderer)
                 fps: 60
             }, options || {});
             this.engine = new Engine();
-            this.loader = new PxLoader();
             this.input = new Input(document.getElementById('game'));
             this.data = {};
             this._tick = 0;
