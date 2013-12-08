@@ -20,8 +20,6 @@ define(['sge/component'], function(Component){
 
             vx = this.entity.set('xform.vx', xaxis * this.data.speed);
             vy = this.entity.set('xform.vy', yaxis * this.data.speed);
-            //this.entity.set('xform.tx', vx * delta, 'add');
-            //this.entity.set('xform.ty', vy * delta, 'add');
         }
     });
     Component.register('controls', ControlsComponent);

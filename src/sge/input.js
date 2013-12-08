@@ -186,11 +186,12 @@ function(Class, Observable){
                     canvas.addEventListener('touchstart', function(evt){
                         for (var i = 0; i < evt.touches.length; i++) {
                             var touch = evt.touches[i];
-                            console.log(touch.pageX, window.innerWidth/4);
                             if (touch.pageX < (window.innerWidth/4)){
-                                joystickIndex = touch.identifier;
-                                joystickStartX = touch.pageX;
-                                joystickStartY = touch.pageY;
+                                if (touch.identifier==-1){
+                                    joystickIndex = touch.identifier;
+                                    joystickStartX = touch.pageX;
+                                    joystickStartY = touch.pageY;
+                                }
                             } else {
                                 this.tapCallback()
                             }
@@ -259,10 +260,10 @@ function(Class, Observable){
                     }.bind(this))
 
                     canvas.addEventListener('touchend', function(evt){
+                        console.log(evt);
                         var ids = new Array(evt.touches).map(function(touch){return touch.identifier;});
                         if (ids.indexOf(joystickIndex)<0){
-
-                                if (isUp){
+                            if (isUp){
                                     isUp=false;
                                     this.keyUpCallback({keyCode: KEYCODES['up']});
                                 }
