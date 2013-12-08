@@ -31650,7 +31650,7 @@ define(
     'sge/input',['sge/lib/class',
     'sge/observable'],
 function(Class, Observable){
-	var KEYCODES = {
+    var KEYCODES = {
         "backspace" : 8,
         "tab" : 9,
         "enter" : 13,
@@ -31810,11 +31810,11 @@ function(Class, Observable){
         }
     });
 
-	var Input = Observable.extend({
-		init: function(elem){
+    var Input = Observable.extend({
+        init: function(elem){
             this._elem = document.body
             this._super()
-			this._isNewKeyDown = {}
+            this._isNewKeyDown = {}
             this._isKeyDown = {};
             this._proxies = [];
             this._events = [];
@@ -31832,14 +31832,13 @@ function(Class, Observable){
                     var joystickIndex = -1;
 
                     canvas.addEventListener('touchstart', function(evt){
-                        for (var i = 0; i < evt.touches.length; i++) {
-                            var touch = evt.touches[i];
+                        for (var i = 0; i < evt.changedTouches.length; i++) {
+                            var touch = evt.changedTouches[i];
                             if (touch.pageX < (window.innerWidth/4)){
-                                if (touch.identifier==-1){
-                                    joystickIndex = touch.identifier;
-                                    joystickStartX = touch.pageX;
-                                    joystickStartY = touch.pageY;
-                                }
+                                
+                                joystickIndex = touch.identifier;
+                                joystickStartX = touch.pageX;
+                                joystickStartY = touch.pageY;
                             } else {
                                 this.tapCallback()
                             }
@@ -31908,10 +31907,11 @@ function(Class, Observable){
                     }.bind(this))
 
                     canvas.addEventListener('touchend', function(evt){
-                        console.log(evt);
-                        var ids = new Array(evt.touches).map(function(touch){return touch.identifier;});
-                        if (ids.indexOf(joystickIndex)<0){
-                            if (isUp){
+                        for (var i = evt.changedTouches.length - 1; i >= 0; i--) {
+                            var touch = evt.changedTouches[i];
+                            if (touch.identifier==joystickIndex){
+
+                                if (isUp){
                                     isUp=false;
                                     this.keyUpCallback({keyCode: KEYCODES['up']});
                                 }
@@ -31929,8 +31929,11 @@ function(Class, Observable){
                                 }
                                 joystickIndex=-1;
                             
+                            }
                         }
                     }.bind(this))
+                        
+                        
             } 
             if ('onkeydown' in window) {
                 window.onkeydown = this.keyDownCallback.bind(this);
@@ -31958,9 +31961,9 @@ function(Class, Observable){
         tick : function(){
            var keys = Object.keys(this._isNewKeyDown);
            for (var i = keys.length - 1; i >= 0; i--) {
-           		var keyCode = keys[i];
-           		this._isKeyDown[keyCode] = true;
-           		delete this._isNewKeyDown[keyCode];
+                var keyCode = keys[i];
+                this._isKeyDown[keyCode] = true;
+                delete this._isNewKeyDown[keyCode];
 
                 this.fireEvent('keydown:' + REVERSE_KEYCODES[keyCode])
            };
@@ -31982,9 +31985,9 @@ function(Class, Observable){
                 proxies[i].fireEvent.apply(proxies[i], args);
             };
         },
-	});
+    });
 
-	return Input
+    return Input
 })
 ;
 define('sge/game',[
