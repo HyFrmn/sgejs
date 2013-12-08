@@ -24,29 +24,32 @@ define(['sge/component'], function(Component){
             var dy = vy * this.get('speed');
             this.entity.set('xform.vx', dx);
             this.entity.set('xform.vy', dy);
-            if ((Math.abs(vx) > 0) || (Math.abs(vy) > 0)){
-                this.entity.set('anim.play', true)
-                if (!this.get('strafe')){
-                    if (Math.abs(vx) > Math.abs(vy)){
-                        if (vx > 0){
-                            this.entity.set('anim.anim', 'walk_right');
-                            this.entity.set('xform.dir', 'right');
+            animComp = this.entity.get('anim');
+            if (animComp){
+                if ((Math.abs(vx) > 0) || (Math.abs(vy) > 0)){
+                    this.entity.set('anim.play', true)
+                    if (!this.get('strafe')){
+                        if (Math.abs(vx) > Math.abs(vy)){
+                            if (vx > 0){
+                                this.entity.set('anim.anim', 'walk_right');
+                                this.entity.set('xform.dir', 'right');
+                            } else {
+                                this.entity.set('anim.anim', 'walk_left');
+                                this.entity.set('xform.dir', 'left');
+                            }
                         } else {
-                            this.entity.set('anim.anim', 'walk_left');
-                            this.entity.set('xform.dir', 'left');
-                        }
-                    } else {
-                        if (vy < 0){
-                            this.entity.set('anim.anim', 'walk_up');
-                            this.entity.set('xform.dir', 'up');
-                        } else {
-                            this.entity.set('anim.anim', 'walk_down');
-                            this.entity.set('xform.dir', 'down');
+                            if (vy < 0){
+                                this.entity.set('anim.anim', 'walk_up');
+                                this.entity.set('xform.dir', 'up');
+                            } else {
+                                this.entity.set('anim.anim', 'walk_down');
+                                this.entity.set('xform.dir', 'down');
+                            }
                         }
                     }
+                } else {
+                    this.entity.set('anim.play', false)   
                 }
-            } else {
-                this.entity.set('anim.play', false)   
             }
         }
     });
