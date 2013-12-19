@@ -71,6 +71,10 @@ define(['sge/lib/class'], function(Class){
 	};
 
 	Component.Factory = function(name, entity, data){
+		if (factory_map[name]==undefined){
+			console.log('Missing Component:', name);
+			return;
+		}
 		return new factory_map[name](entity, data);
 	}
 

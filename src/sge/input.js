@@ -128,6 +128,9 @@ function(Class, Observable){
         isPressed: function(keyCode){
             return this._input.isPressed(keyCode);
         },
+        isDown: function(keyCode){
+            return this._input.isDown(keyCode);
+        },
         dpad: function(){
             var xaxis = 0;
             var yaxis = 0;
@@ -145,16 +148,16 @@ function(Class, Observable){
                     xaxis--;
                 }
             } else {
-                if (this.isPressed('down')){
+                if (this.isDown('down')){
                     yaxis++;
                 }
-                if (this.isPressed('up')){
+                if (this.isDown('up')){
                     yaxis--;
                 }
-                if (this.isPressed('right')){
+                if (this.isDown('right')){
                     xaxis++;
                 }
-                if (this.isPressed('left')){
+                if (this.isDown('left')){
                     xaxis--;
                 }
             }
@@ -171,6 +174,8 @@ function(Class, Observable){
             this._proxies = [];
             this._events = [];
             this.joystick = null;
+            this._isKeyPress = {};
+
             var cvs = document.getElementById('game');
             if ('ontouchstart' in window){
                 var canvas = document.getElementById('game');
@@ -198,8 +203,8 @@ function(Class, Observable){
                     }.bind(this))
 
                     canvas.addEventListener('touchmove', function(evt){
-                        for (var i = 0; i < evt.touches.length; i++) {
-                            var touch = evt.touches[i];
+                        for (var i = 0; i < evt.changedTouches.length; i++) {
+                            var touch = evt.changedTouches[i];
                             if (touch.identifier==joystickIndex){
                                 var deltaX = joystickStartX - touch.pageX;
                                 var deltaY = joystickStartY - touch.pageY;
@@ -308,17 +313,23 @@ function(Class, Observable){
             this._isKeyDown[e.keyCode] = undefined;
         },
         isPressed : function(keyCode){
+            return (this._isKeyPress[KEYCODES[keyCode]] === true);
+        },
+        isDown : function(keyCode){
             return (this._isKeyDown[KEYCODES[keyCode]] === true);
         },
         tick : function(){
-           var keys = Object.keys(this._isNewKeyDown);
+           this._isKeyPress = {};
+           keys = Object.keys(this._isNewKeyDown);
+           
            for (var i = keys.length - 1; i >= 0; i--) {
                 var keyCode = keys[i];
                 this._isKeyDown[keyCode] = true;
+                this._isKeyPress[keyCode] = true;
                 delete this._isNewKeyDown[keyCode];
-
                 this.fireEvent('keydown:' + REVERSE_KEYCODES[keyCode])
-           };
+           }
+
            for (var j = this._events.length - 1; j >= 0; j--) {
                this.fireEvent(this._events[j]);
            }

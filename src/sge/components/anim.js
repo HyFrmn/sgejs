@@ -22,7 +22,7 @@ define(['sge/component'], function(Component){
 			this.frameLength = null;
 			this.setAnim(this.data.anim || key);
 		},
-		tick : function(delta){
+		render : function(delta){
 			if (this.data.play){
 				this._lastUpdate = this._lastUpdate - delta;
 				if (this._lastUpdate <= 0){
@@ -44,6 +44,8 @@ define(['sge/component'], function(Component){
 		_set_anim : function(value) {
 			if (value != this.current){
 				this.setAnim(value);
+				this.frame=0;
+				this.entity.set('sprite.frame', this.currentAnim[this.frame]);
 			}
 		},
 		hasAnim: function(name){

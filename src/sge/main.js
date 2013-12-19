@@ -1,4 +1,5 @@
 define(['sge/config',
+        'sge/observable',
         'sge/renderer',
         'sge/engine',
         'sge/entity',
@@ -14,10 +15,12 @@ define(['sge/config',
         'sge/lib/collision',
         'sge/lib/util',
         'sge/spritesheet',
-        'sge/physics'
+        'sge/physics',
+        'sge/loader',
         ],
 function(
       config,
+      Observable,
       Renderer,
       Engine,
       Entity,
@@ -33,10 +36,12 @@ function(
       collision,
       util,
       SpriteSheet,
-      Physics
+      Physics,
+      Loader
         ){
    return {
         config: config,
+        Observable: Observable,
         Renderer: Renderer,
         Engine : Engine,
         Entity : Entity,
@@ -54,6 +59,7 @@ function(
         util: util,
         collision : collision,
         SpriteSheet : SpriteSheet,
-        Physics : Physics
+        Physics : Physics,
+        Loader : Loader
    };
 });

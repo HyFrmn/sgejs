@@ -45,7 +45,7 @@ function(_, util, Class, StateMachine, Engine, GameState, Input, Renderer){
             this.scene.addChild(instruct);
             this.startGame = function(){
                 this.game._states['game'] = new this.game._gameState(this.game, 'Game');
-                this.game.fsm.startLoad();    
+                this.game.fsm.startLoad();
             }.bind(this);
             this.startState();
             this.input.addListener('keydown:enter', this.startGame);
@@ -137,10 +137,12 @@ function(_, util, Class, StateMachine, Engine, GameState, Input, Renderer){
         initState: function(){
             var width = this.game.renderer.width;
             var height = this.game.renderer.height;
-            var title = new CAAT.TextActor().setText('Paused').setLocation(width/2,height/2);
-            var instruct = new CAAT.TextActor().setText('Press Enter to Start').setLocation(width/2,height/2) + 32;
-            this.scene.addChild(title);
-            //this.scene.addChild(instruct);
+            this.title = new CAAT.TextActor().setText('Paused');
+            this.instruct = new CAAT.TextActor().setText('Press Enter to Start');
+            this.background = new CAAT.ShapeActor().setShape(CAAT.ShapeActor.SHAPE_RECT).setFillStyle('black').setLocation(0,0);
+            this.scene.addChild(this.background)
+            this.scene.addChild(this.title);
+            this.scene.addChild(this.instruct);
             this.unpause = function(){
                 this.game.fsm.unpause();
             }.bind(this);
@@ -149,6 +151,11 @@ function(_, util, Class, StateMachine, Engine, GameState, Input, Renderer){
         },
         startState : function(){
             this._super();
+            var width = this.game.renderer.width;
+            var height = this.game.renderer.height;
+            this.title.setLocation(width/2,height/2);
+            this.instruct.setLocation(0,0);
+            this.background.setSize(width,height);
             if (this.elem){
                 this.elem.fadeIn();
             }
@@ -193,6 +200,7 @@ function(_, util, Class, StateMachine, Engine, GameState, Input, Renderer){
             this.data = {};
             this._tick = 0;
             this._last = 0;
+            this._time = 0;
             this._lastRender = 0;
             this._gameState = DefaultGame;
 
@@ -218,12 +226,12 @@ function(_, util, Class, StateMachine, Engine, GameState, Input, Renderer){
                     onleavestate: function(evt, from, to){
                         if (from=="none"){return};
                         //console.log('Leaving:', from)
-                        this._states[from].endState(evt, from, to);
+                        this._states[from].endState.apply(this._states[from], arguments);
                     }.bind(this),
                     onenterstate: function(evt, from, to){
                         if (from=="none"){return};
                         //console.log('Entering:', to)
-                        this._states[to].startState(evt, from, to);
+                        this._states[to].startState.apply(this._states[to], arguments);
                         this.state = this._states[to];
                     }.bind(this)
                 }
@@ -255,6 +263,7 @@ function(_, util, Class, StateMachine, Engine, GameState, Input, Renderer){
         postRender: function(){},
         tick: function(delta){
             this.input.tick();
+            this._time += delta;
             if (this.state!=null){
                 this.state._time += delta;
                 this.state.tick(delta);

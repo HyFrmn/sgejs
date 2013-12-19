@@ -24,10 +24,16 @@ define(['sge/component'], function(Component){
             var dy = vy * this.get('speed');
             this.entity.set('xform.vx', dx);
             this.entity.set('xform.vy', dy);
-            animComp = this.entity.get('anim');
-            if (animComp){
-                if ((Math.abs(vx) > 0) || (Math.abs(vy) > 0)){
-                    this.entity.set('anim.play', true)
+        },
+        render: function(){
+            var vx = this.get('vx');
+            var vy = this.get('vy');
+            var movement = (Math.abs(vx) > 0) || (Math.abs(vy) > 0);
+            var animComp = this.entity.get('anim');
+            if (movement){
+                this.entity.set('anim.play', true);
+                this.entity.fireEvent('movement.update');
+                if (animComp){
                     if (!this.get('strafe')){
                         if (Math.abs(vx) > Math.abs(vy)){
                             if (vx > 0){
@@ -47,8 +53,15 @@ define(['sge/component'], function(Component){
                             }
                         }
                     }
-                } else {
-                    this.entity.set('anim.play', false)   
+                } 
+            } else {
+                if (animComp){
+                    //this.entity.set('anim.play', false);
+                    if (!this.get('strafe')){
+                        var dir = this.entity.get('xform.dir');
+                        this.entity.set('anim.anim', 'stand_' + dir);
+                        this.entity.set('anim.play', false);
+                    }
                 }
             }
         }

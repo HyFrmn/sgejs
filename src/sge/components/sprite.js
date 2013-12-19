@@ -34,9 +34,10 @@ define(['sge/component', 'sge/spritesheet', 'sge/config', 'sge/renderer'], funct
         register: function(state){
             this._super(state);
             this.actor = new CAAT.Actor().
-                    setLocation(this.get('offsetX'),this.get('offsetY')).
+                    setBounds(this.get('offsetX'),this.get('offsetY'), this.spriteSheet.singleWidth, this.spriteSheet.singleHeight).
                     setBackgroundImage(this.spriteSheet).
                     setSpriteIndex( 0 )
+            this.entity.get('xform.container').setSize(this.spriteSheet.singleWidth, this.spriteSheet.singleHeight);
             this.entity.get('xform.container').addChild(this.actor);
         },
         deregister: function(state){

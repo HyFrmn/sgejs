@@ -70,7 +70,7 @@ define(['sge/component'], function(Component){
 		render: function(renderer, layer){
 			var tx = this.entity.get('xform.tx');
             var ty = this.entity.get('xform.ty');
-			this.container.setLocation(tx + this.get('offsetX'), ty + this.get('offsetY'));
+			this.container.setLocation(Math.round(tx + this.get('offsetX')), Math.round(ty + this.get('offsetY')));
 		}
 	});
 	Component.register('xform', XFormComponent);

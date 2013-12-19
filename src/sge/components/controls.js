@@ -18,8 +18,8 @@ define(['sge/component'], function(Component){
             var xaxis = dpad[0];
             var yaxis = dpad[1];
 
-            vx = this.entity.set('xform.vx', xaxis * this.data.speed);
-            vy = this.entity.set('xform.vy', yaxis * this.data.speed);
+            vx = this.entity.set('movement.vx', xaxis);
+            vy = this.entity.set('movement.vy', yaxis);
         }
     });
     Component.register('controls', ControlsComponent);
