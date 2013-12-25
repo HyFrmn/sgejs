@@ -135,7 +135,7 @@ define(['sge/lib/class', 'sge/vendor/underscore'],
 			entity.state = this;
 			entity.register(this);
 			this.updateSpatialHash(entity);
-			entity.addListener('xform.update', function(){
+			entity.addListener('xform.move', function(){
 				this.updateSpatialHash(entity);
 			}.bind(this))
 			entity.addListener('entity.kill', function(){
