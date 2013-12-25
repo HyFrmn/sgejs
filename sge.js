@@ -31940,6 +31940,9 @@ define('sge/gamestate',['sge/lib/class', 'sge/vendor/underscore'],
 			entity.state = this;
 			entity.register(this);
 			this.updateSpatialHash(entity);
+			entity.addListener('xform.update', function(){
+				this.updateSpatialHash(entity);
+			}.bind(this))
 			entity.addListener('entity.kill', function(){
                 entity.active = false;
                 this._killList.push(entity);
